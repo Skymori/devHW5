@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF_8">
+    <meta name="Viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DevHW5</title>
+    <link rel="stylesheet" href="app.css">
+    <script src="fetch.js" defer></script>
+</head>
+<body>
+<section id="control=center">
+
+    <button id="find-available-pet"> Find Available Pet</button>
+    <button id="find-pending-pet"> Find Pending Pet</button>
+    <button id="find-sold-pet"> Find Sold Pet</button>
+    <button id="find-store-inventory"> Find Store Inventory</button>
+    <button id="find-user1"> Find User1</button>
+    <button id="login-user"> Login User</button>
+    <button id="logout"> Logout User</button>
+
+    <button id="place-order-for-a-pet">Place order for a pet</button>
+    <button id="post-pet">POST Pet</button>
+    <button id="update-pet">Update pet</button>
+    <button id="create-with-user-list">Create with user List</button>
+    <button id="create-with-user-array">Create with user Array</button>
+    <button id="create-user">Create user</button>
+    <button id="update-an-existing-pet">Update an existing pet</button>
+    <button id="update-user">Update user</button>
+    <button id="delete-user">Delete user</button>
+</section>
+<h3> Getting pet by id</h3>
+
+<label for="petId">Enter pet Id</label>
+<input type="number" id="petId" name = "petId"><br>
+
+
+<button id="find-pet-by-id"> Find Pet By Id</button>
+
+
+<h3> Getting order by pet id from 1 to 10</h3>
+
+<label for="petIdForOder">Enter pet Id for Order</label>
+<input type="number" id="petIdForOrder" name="petIdForOder"><br>
+<button id="find-order-by-pet-id"> Find Order By Pet Id</button>
+
+<h3> Delete order by order id from 1 to 10</h3>
+
+<label for="orderIdForDelete">Enter order Id for Delete</label>
+<input type="number" id="orderIdForDelete" name="orderIdForDelete"><br>
+<button id="delete-order">Delete order by id</button>
+
+<h3> Delete pet by id </h3>
+
+<label for="orderIdForDelete">Enter pet Id for Delete</label>
+<input type="number" id="petIdForDelete" name="petIdForDelete"><br>
+<button id="delete-pet">Delete pet by id</button>
+
+<h3>Upload image</h3>
+<form action="#">
+    <div>
+        <label for="orderIdForDelete">Enter pet Id</label>
+        <input type="number" id="petIdForImage" name="petIdForImage"><br>
+        <input type="file" id="avatar_img" accept="image/x-png" multiple/>
+    </div>
+    <div>
+        <button id="btnSubmit">Upload image</button>
+    </div>
+</form>
+
+</body>
+</html>
