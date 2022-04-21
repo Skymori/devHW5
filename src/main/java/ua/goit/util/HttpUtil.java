@@ -17,7 +17,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public class HttpUtil<T> {
+public class HttpUtil<T>{
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
     private static final CloseableHttpClient DEFAULT_CLIENT = HttpClients.createDefault();
     private static final ResponseHandler RESPONSE_HANDLER = new ResponseHandler();
@@ -26,28 +26,32 @@ public class HttpUtil<T> {
 
     protected static final String HOST = "https://petstore.swagger.io/v2";
 
-    protected static HttpRequest sendGet(String url){
+    protected static HttpRequest sendGet(String url) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
                 .build();
     }
 
-    protected static <T> HttpRequest sendDelete(String url){
+    protected static HttpRequest sendDelete(String url) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .DELETE()
                 .build();
     }
-    protected static <T> HttpRequest requestWithBody(String methodName, String url, T entity){
+
+    protected static <T> HttpRequest requestWithBody(String methodName, String url, T entity) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Content-type", "application/json")
+                .method(methodName, HttpRequest.BodyPublishers.ofString(GSON.toJson(entity)))
                 .build();
     }
+
     protected static HttpResponse<String> getResponse(HttpRequest request) throws IOException, InterruptedException {
         return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
     }
+
     protected static ApiResponse sendMultipartEntity(String url, HttpEntity entity) throws IOException {
         HttpPost post = new HttpPost(url);
         post.setEntity(entity);

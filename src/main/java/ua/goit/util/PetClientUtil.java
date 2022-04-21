@@ -1,6 +1,7 @@
 package ua.goit.util;
 
 import com.google.gson.reflect.TypeToken;
+import lombok.SneakyThrows;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.ContentType;
@@ -14,7 +15,6 @@ import ua.goit.entity.Pet;
 import ua.goit.entity.PetStatus;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
@@ -28,13 +28,15 @@ public class PetClientUtil extends HttpUtil<Pet> {
     private static final String READ_PET_BY_STATUS = "/pet/findByStatus?status=";
     private static final String DELETE_PET = "/pet/";
 
-    public static Pet createPet(Pet pet) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static Pet createPet(Pet pet) {
         HttpRequest request = HttpUtil.requestWithBody("POST", String.format("%s%s", HOST, CREATE_PET), pet);
         HttpResponse<String> response = HttpUtil.getResponse(request);
         return GSON.fromJson(response.body(), Pet.class);
     }
 
-    public static ApiResponse uploadImage(int id, String metaData, File image) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static ApiResponse uploadImage(int id, String metaData, File image) {
         FileBody fileBody = new FileBody(image, ContentType.DEFAULT_BINARY);
         StringBody stringBody = new StringBody(metaData, ContentType.MULTIPART_FORM_DATA);
         MultipartEntityBuilder builder = MultipartEntityBuilder.create()
@@ -46,7 +48,8 @@ public class PetClientUtil extends HttpUtil<Pet> {
                 id, UPLOAD_IMAGE), build);
     }
 
-    public static ApiResponse updatePet(int id, Pet newPet) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static ApiResponse updatePet(int id, Pet newPet) {
         String url = String.format("%s%s%d", HOST, UPDATE_PET, id);
         List<NameValuePair> form = new ArrayList<>();
         form.add(new BasicNameValuePair("name", newPet.getName()));
@@ -54,13 +57,15 @@ public class PetClientUtil extends HttpUtil<Pet> {
         return sendPostEncoded(url, form);
     }
 
-    public static Pet getPetById(int id) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static Pet getPetById(int id) {
         HttpRequest request = HttpUtil.sendGet(String.format("%s%s%s", HOST, READ_PET, id));
         HttpResponse<String> response = HttpUtil.getResponse(request);
         return GSON.fromJson(response.body(), Pet.class);
     }
 
-    public static List<Pet> getPetByStatus(PetStatus status) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static List<Pet> getPetByStatus(PetStatus status) {
         HttpRequest request = HttpUtil.sendGet(String.format("%s%s%s", HOST, READ_PET_BY_STATUS,
                 status.toString().toLowerCase()));
         HttpResponse<String> response = HttpUtil.getResponse(request);
@@ -68,7 +73,8 @@ public class PetClientUtil extends HttpUtil<Pet> {
         }.getType());
     }
 
-    public static ApiResponse delete(int id) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static ApiResponse delete(int id) {
         HttpRequest request = sendDelete(String.format("%s%s%d", HOST, DELETE_PET, id));
         HttpResponse<String> response = HttpUtil.getResponse(request);
         return GSON.fromJson(response.body(), ApiResponse.class);

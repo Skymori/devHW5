@@ -9,7 +9,6 @@ import ua.goit.util.UserClientUtil;
 import ua.goit.view.View;
 
 import java.io.File;
-import java.io.IOException;
 
 public class UpdateCommand extends AbstractCommand implements Command{
     private static final String MENU = """
@@ -50,34 +49,22 @@ public class UpdateCommand extends AbstractCommand implements Command{
     private void updateUser() {
         view.write("Enter user name you would like to update");
         String userName = view.read();
-        try {
-            UserClientUtil.getUserByUserName(userName);
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        UserClientUtil.getUserByUserName(userName);
         User user = readUserFromConsole();
-        try {
-            ApiResponse apiResponse = UserClientUtil.updateUser(userName, user);
-            resultOutput(apiResponse);
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        ApiResponse apiResponse = UserClientUtil.updateUser(userName, user);
+        resultOutput(apiResponse);
     }
 
     private void updatePet() {
         int id = readIntegerFromConsole("Enter pet id you would like to update");
-        try {
-            Pet petToUpdate = PetClientUtil.getPetById(id);
-            view.write("Enter pet new name");
-            String newName = view.read();
-            PetStatus newStatus = readPetStatusFromConsole();
-            petToUpdate.setName(newName);
-            petToUpdate.setStatus(newStatus);
-            ApiResponse apiResponse = PetClientUtil.updatePet(id, petToUpdate);
-            resultOutput(apiResponse);
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        Pet petToUpdate = PetClientUtil.getPetById(id);
+        view.write("Enter pet new name");
+        String newName = view.read();
+        PetStatus newStatus = readPetStatusFromConsole();
+        petToUpdate.setName(newName);
+        petToUpdate.setStatus(newStatus);
+        ApiResponse apiResponse = PetClientUtil.updatePet(id, petToUpdate);
+        resultOutput(apiResponse);
     }
 
     private void addPhotos() {
@@ -85,11 +72,7 @@ public class UpdateCommand extends AbstractCommand implements Command{
         view.write("Enter description to photo");
         String metaData = view.read();
         File image = readFileFromConsole();
-        try {
-            ApiResponse apiResponse = PetClientUtil.uploadImage(id, metaData, image);
-            resultOutput(apiResponse);
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        ApiResponse apiResponse = PetClientUtil.uploadImage(id, metaData, image);
+        resultOutput(apiResponse);
     }
 }

@@ -3,11 +3,12 @@ package ua.goit.controller;
 import ua.goit.command.*;
 import ua.goit.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ApplicationController {
+public class ApplicationController{
     private final View view;
     private final List<Command> commands;
 
@@ -21,12 +22,12 @@ public class ApplicationController {
                 new DeleteCommand(view)));
     }
 
-    public void run() {
+    public void run() throws IOException, InterruptedException {
         view.write("Welcome to the pet store");
         doCommand();
     }
 
-    private void doCommand() {
+    private void doCommand() throws IOException, InterruptedException {
         boolean running = true;
         while (running) {
             view.write("Please enter a command or 'help' to retrieve command list\nEnter 'exit' to leave");

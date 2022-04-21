@@ -9,7 +9,6 @@ import ua.goit.util.PetClientUtil;
 import ua.goit.util.UserClientUtil;
 import ua.goit.view.View;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,6 +33,7 @@ public class ReadCommand extends AbstractCommand implements Command{
             return - go back to main menu
             """;
     private final View view;
+
 
     public ReadCommand(View view) {
         super(view);
@@ -64,12 +64,8 @@ public class ReadCommand extends AbstractCommand implements Command{
     private void findUserByUserName() {
         view.write("Enter user name");
         String userName = view.read();
-        try {
-            User user = UserClientUtil.getUserByUserName(userName);
-            view.write("Founded user:\n" + user);
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        User user = UserClientUtil.getUserByUserName(userName);
+        view.write("Founded user:\n" + user);
     }
 
     private void petMenuProcess() {
@@ -88,22 +84,14 @@ public class ReadCommand extends AbstractCommand implements Command{
 
     private void getPetByStatus() {
         PetStatus status = readPetStatusFromConsole();
-        try {
-            List<Pet> pets = PetClientUtil.getPetByStatus(status);
-            pets.forEach(pet -> view.write(pet.toString()));
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        List<Pet> pets = PetClientUtil.getPetByStatus(status);
+        pets.forEach(pet -> view.write(pet.toString()));
     }
 
     private void getPetById() {
         int id = readIntegerFromConsole("Enter pet id");
-        try {
-            Pet pet = PetClientUtil.getPetById(id);
-            view.write("Founded pet:\n" + pet);
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        Pet pet = PetClientUtil.getPetById(id);
+        view.write("Founded pet:\n" + pet);
     }
 
     private void storeMenuProcess() {
@@ -121,12 +109,8 @@ public class ReadCommand extends AbstractCommand implements Command{
     }
 
     private void getInventoriesByStatus() {
-        try {
-            HashMap<String, Integer> inventories = OrderClientUtil.getInventories();
-            inventories.entrySet().forEach(status -> view.write(status.toString()));
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        HashMap<String, Integer> inventories = OrderClientUtil.getInventories();
+        inventories.entrySet().forEach(status -> view.write(status.toString()));
     }
 
     private void getOrderById() {
@@ -136,13 +120,9 @@ public class ReadCommand extends AbstractCommand implements Command{
             if (id < 1 || id > 10) {
                 view.write("Wrong data, please, enter order id in range 1-10");
             } else {
-                try {
-                    Order order = OrderClientUtil.getOrderById(id);
-                    view.write("Founded order:\n" + order);
-                    running = false;
-                } catch (IOException | InterruptedException ex) {
-                    view.write(ex.getMessage());
-                }
+                Order order = OrderClientUtil.getOrderById(id);
+                view.write("Founded order:\n" + order);
+                running = false;
             }
         }
     }

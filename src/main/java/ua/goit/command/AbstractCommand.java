@@ -12,33 +12,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractCommand {
+public class AbstractCommand {
     private final View view;
 
-    protected AbstractCommand(View view) {
+    public AbstractCommand(View view) {
         this.view = view;
     }
 
-    protected int readIntegerFromConsole(String message) {
+    protected Integer readIntegerFromConsole(String message) {
         int number = 0;
         boolean isFieldBlank = true;
         while (isFieldBlank) {
             try {
                 view.write(message);
                 number = Integer.parseInt(view.read());
-                if (number < 0){
-                    view.write("Number is less, than zero, please, enter the correct one");
-                }else {
+                if (number < 0) {
+                    view.write("Number can't be less '0'");
+                } else {
                     isFieldBlank = false;
                 }
-            } catch (Exception e){
-                view.write("Wrong format, please, enter integer.");
+            } catch (Exception e) {
+                view.write("Wrong format, try again");
             }
         }
         return number;
     }
+
+
     protected User readUserFromConsole() {
-        int userId = readIntegerFromConsole("Enter user id");
+        Integer id = readIntegerFromConsole("Enter user id");
         view.write("Enter user name");
         String userName = view.read();
         view.write("Enter user first name");
@@ -51,25 +53,26 @@ public abstract class AbstractCommand {
         String password = view.read();
         view.write("Enter user phone number");
         String phone = view.read();
-        int status = readIntegerFromConsole("Enter user status");
-        return new User(userId, userName, firstName, lastName, email, password, phone, status);
+        Integer status = readIntegerFromConsole("Enter user status");
+        return new User(id, userName, firstName, lastName, email, password, password, status);
     }
+
     protected Pet readPetFromConsole() {
-        int petId = readIntegerFromConsole("Enter pet id");
+        Integer id = readIntegerFromConsole("Enter pet id");
         Category category = readCategoryFromConsole();
         view.write("Enter pet name");
         String name = view.read();
         List<String> photoUrls = readPhotoUrlsFromConsole();
         List<Tag> tags = readTagsFromConsole();
         PetStatus status = readPetStatusFromConsole();
-        return new Pet(petId, category, name, photoUrls, tags, status);
+        return new Pet(id, category, name, photoUrls, tags, status);
     }
 
     private Category readCategoryFromConsole() {
-        int categoryId = readIntegerFromConsole("Enter category Id");
+        Integer id = readIntegerFromConsole("Enter category id");
         view.write("Enter category name");
         String name = view.read();
-        return new Category(categoryId, name);
+        return new Category(id, name);
     }
 
     private List<Tag> readTagsFromConsole() {
@@ -108,9 +111,7 @@ public abstract class AbstractCommand {
                 String imagePath = view.read();
                 new FileReader(imagePath);
                 String extension = FilenameUtils.getExtension(imagePath);
-                if (extension.equalsIgnoreCase("jpeg") ||
-                        extension.equalsIgnoreCase("png") ||
-                        extension.equalsIgnoreCase("jpg")) {
+                if (extension.equalsIgnoreCase("jpeg") || extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpg")) {
                     image = new File(imagePath);
                     isFieldBlank = false;
                 } else {
@@ -131,13 +132,13 @@ public abstract class AbstractCommand {
     }
 
     protected Order readOrderFromConsole() {
-        int orderId = readIntegerFromConsole("Enter order id");
-        int petId = readIntegerFromConsole("Enter pet id");
-        int quantity = readIntegerFromConsole("Enter quantity");
+        Integer id = readIntegerFromConsole("Enter order id");
+        Integer petId = readIntegerFromConsole("Enter pet id");
+        Integer quantity = readIntegerFromConsole("Enter quantity");
         String shipDate = LocalDate.now().toString();
         OrderStatus status = readOrderStatusFromConsole();
         boolean complete = readBooleanFromConsole();
-        return new Order(orderId, petId, quantity, shipDate, status, complete);
+        return new Order(id, petId, quantity, shipDate, status, complete);
     }
 
     protected OrderStatus readOrderStatusFromConsole() {
@@ -191,10 +192,7 @@ public abstract class AbstractCommand {
         if (response.getCode() == 200) {
             view.write("Updated successfully");
         } else {
-            view.write("""
-                    Failed to update
-                    Response -""" + response.getMessage());
+            view.write("Failed to update Response -" + response.getMessage());
         }
     }
-
 }

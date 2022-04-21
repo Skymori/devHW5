@@ -1,5 +1,6 @@
 package ua.goit.util;
 
+import lombok.SneakyThrows;
 import ua.goit.entity.ApiResponse;
 import ua.goit.entity.User;
 
@@ -16,32 +17,38 @@ public class UserClientUtil extends HttpUtil<User>{
     private static final String UPDATE_USER = "/user/";
     private static final String DELETE_USER = "/user/";
 
-    public static ApiResponse createUser(User user) throws IOException, InterruptedException {
+
+    @SneakyThrows
+    public static ApiResponse createUser(User user)  {
         HttpRequest request = HttpUtil.requestWithBody("POST", String.format("%s%s", HOST, CREATE_USER), user);
         HttpResponse<String> response = HttpUtil.getResponse(request);
         return GSON.fromJson(response.body(), ApiResponse.class);
     }
 
-    public static ApiResponse createUserArray(List<User> users) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static ApiResponse createUserArray(List<User> users)  {
         HttpRequest request = HttpUtil.requestWithBody("POST", String.format("%s%s", HOST, CREATE_WITH_LIST), users);
         HttpResponse<String> response = HttpUtil.getResponse(request);
         return GSON.fromJson(response.body(), ApiResponse.class);
     }
 
-    public static User getUserByUserName(String userName) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static User getUserByUserName(String userName) {
         HttpRequest request = HttpUtil.sendGet(String.format("%s%s%s", HOST, READ_USER, userName));
         HttpResponse<String> response = HttpUtil.getResponse(request);
         return GSON.fromJson(response.body(), User.class);
     }
 
-    public static ApiResponse updateUser(String userName, User newUser) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static ApiResponse updateUser(String userName, User newUser)  {
         HttpRequest request = HttpUtil.requestWithBody("PUT", String.format("%s%s%s", HOST, UPDATE_USER,
                 userName), newUser);
         HttpResponse<String> response = HttpUtil.getResponse(request);
         return GSON.fromJson(response.body(), ApiResponse.class);
     }
 
-    public static ApiResponse delete(String userName) throws IOException, InterruptedException {
+    @SneakyThrows
+    public static ApiResponse delete(String userName)  {
         HttpRequest request = sendDelete(String.format("%s%s%s", HOST, DELETE_USER, userName));
         HttpResponse<String> response = HttpUtil.getResponse(request);
         return GSON.fromJson(response.body(), ApiResponse.class);

@@ -6,8 +6,6 @@ import ua.goit.util.PetClientUtil;
 import ua.goit.util.UserClientUtil;
 import ua.goit.view.View;
 
-import java.io.IOException;
-
 public class DeleteCommand extends AbstractCommand implements Command{
     private static final String MENU = """
             Please, enter the number according to list below
@@ -47,22 +45,14 @@ public class DeleteCommand extends AbstractCommand implements Command{
     private void deleteUser() {
         view.write("Enter user name you would like to delete");
         String userName = view.read();
-        try {
-            ApiResponse apiResponse = UserClientUtil.delete(userName);
-            resultOutput(apiResponse);
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        ApiResponse apiResponse = UserClientUtil.delete(userName);
+        resultOutput(apiResponse);
     }
 
     private void deletePet() {
-        int id = readIntegerFromConsole("Enter pet id you would like to delete");
-        try {
-            ApiResponse apiResponse = PetClientUtil.delete(id);
-            resultOutput(apiResponse);
-        } catch (IOException | InterruptedException ex) {
-            view.write(ex.getMessage());
-        }
+        Integer id = readIntegerFromConsole("Enter pet id you would like to delete");
+        ApiResponse apiResponse = PetClientUtil.delete(id);
+        resultOutput(apiResponse);
     }
 
     private void deleteOrder() {
@@ -73,21 +63,16 @@ public class DeleteCommand extends AbstractCommand implements Command{
                 view.write("Wrong data, please, enter order id in range 1-10");
                 return;
             } else {
-                try {
-                    ApiResponse apiResponse = OrderClientUtil.delete(id);
-                    if (apiResponse.getCode() == 200) {
-                        view.write("Deleted successfully");
-                        running = false;
-                    } else {
-                        view.write("""
-                                Failed to delete the order
-                                """ + apiResponse.getMessage());
-                    }
-                } catch (IOException | InterruptedException ex) {
-                    view.write(ex.getMessage());
+                ApiResponse apiResponse = OrderClientUtil.delete(id);
+                if (apiResponse.getCode() == 200) {
+                    view.write("Deleted successfully");
+                    running = false;
+                } else {
+                    view.write("""
+                            Failed to delete the order
+                            """ + apiResponse.getMessage());
                 }
             }
         }
     }
-
 }
